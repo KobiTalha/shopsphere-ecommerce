@@ -166,7 +166,14 @@
             <div class="field-grid">
               <label class="field">
                 <span>Name</span>
-                <input type="text" id="customerName" name="name" placeholder="Your full name" required />
+                <input
+                  type="text"
+                  id="customerName"
+                  name="name"
+                  placeholder="Your full name"
+                  autocomplete="name"
+                  required
+                />
               </label>
 
               <label class="field">
@@ -176,6 +183,7 @@
                   id="customerPhone"
                   name="phone"
                   placeholder="01XXXXXXXXX"
+                  autocomplete="tel"
                   required
                 />
               </label>
@@ -187,6 +195,7 @@
                   name="address"
                   rows="4"
                   placeholder="House, road, area, district"
+                  autocomplete="street-address"
                   required
                 ></textarea>
               </label>
@@ -198,6 +207,7 @@
                   name="note"
                   rows="3"
                   placeholder="Optional delivery instructions"
+                  maxlength="160"
                 ></textarea>
               </label>
             </div>
@@ -207,12 +217,12 @@
                 <p class="section-label">Delivery option</p>
                 <div class="delivery-options">
                   <label class="radio-card">
-                    <input type="radio" name="deliveryArea" value="inside" checked />
+                  <input type="radio" name="deliveryArea" value="inside" checked />
                     <span>Inside Dhaka</span>
                     <strong>50 TK</strong>
                   </label>
                   <label class="radio-card">
-                    <input type="radio" name="deliveryArea" value="outside" />
+                  <input type="radio" name="deliveryArea" value="outside" />
                     <span>Outside Dhaka</span>
                     <strong>150 TK</strong>
                   </label>
@@ -223,7 +233,12 @@
                 <p class="section-label">Coupon</p>
                 <label class="field">
                   <span>Coupon code</span>
-                  <input type="text" id="couponInput" placeholder="Use SAVE200 after 2000 TK" />
+                  <input
+                    type="text"
+                    id="couponInput"
+                    placeholder="Use SAVE200 after 2000 TK"
+                    autocomplete="off"
+                  />
                 </label>
                 <p class="hint" id="couponHint">
                   Coupon becomes valid when subtotal is more than 2000 TK.
