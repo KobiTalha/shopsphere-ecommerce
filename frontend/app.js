@@ -388,6 +388,7 @@ function setCartPanelOpen(isOpen) {
   elements.cartPanel.setAttribute("aria-hidden", String(!isOpen && window.innerWidth <= 780));
   elements.cartTrigger.setAttribute("aria-expanded", String(isOpen));
   elements.cartOverlay.hidden = !isOpen || window.innerWidth > 780;
+  document.body.classList.toggle("cart-open", isOpen && window.innerWidth <= 780);
 }
 
 function syncProductActionState(productId) {
