@@ -190,6 +190,16 @@ textarea {
     color 180ms ease;
 }
 
+#clearSearchButton {
+  background: transparent;
+  box-shadow: none;
+  color: var(--muted);
+}
+
+#clearSearchButton:hover {
+  color: var(--accent);
+}
+
 :focus-visible {
   outline: 3px solid rgba(255, 107, 44, 0.28);
   outline-offset: 3px;
