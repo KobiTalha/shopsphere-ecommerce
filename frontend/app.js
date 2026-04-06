@@ -105,15 +105,20 @@ function renderProducts(products) {
             </div>
             <div class="rating-row">
               <span>Rating ${product.rating} / 5</span>
-              <span>Fast shipping</span>
+              <span>${product.shippingEta || "Fast shipping"}</span>
+            </div>
+            <div class="stock-row">
+              <span class="stock-label ${product.stock > 0 ? "in-stock" : "out-of-stock"}">
+                ${product.stock > 0 ? `${product.stock} left` : "Out of stock"}
+              </span>
             </div>
             <button
               class="add-button"
               type="button"
               data-product-id="${product.id}"
-              ${state.activeProductIds.has(product.id) ? "disabled" : ""}
+              ${state.activeProductIds.has(product.id) || product.stock < 1 ? "disabled" : ""}
             >
-              Add to cart
+              ${product.stock > 0 ? "Add to cart" : "Unavailable"}
             </button>
           </div>
         </article>
