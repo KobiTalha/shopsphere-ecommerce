@@ -75,6 +75,15 @@ function syncCatalogQuery() {
   window.history.replaceState({}, "", nextUrl);
 }
 
+function hydrateCatalogStateFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  state.searchTerm = params.get("search") || "";
+  state.category = params.get("category") || "";
+  state.sortBy = params.get("sort") || "featured";
+  elements.searchInput.value = state.searchTerm;
+  elements.sortSelect.value = state.sortBy;
+}
+
 function getDeliveryArea() {
   const selected = document.querySelector('input[name="deliveryArea"]:checked');
   return selected ? selected.value : "inside";
@@ -594,8 +603,9 @@ window.addEventListener("keydown", (event) => {
 
 async function init() {
   try {
+    hydrateCatalogStateFromUrl();
     await Promise.all([loadCategories(), loadProducts(), refreshCart()]);
-    elements.clearSearchButton.hidden = true;
+    elements.clearSearchButton.hidden = state.searchTerm === "";
     setCartPanelOpen(false);
     toggleSubmitButton();
   } catch (error) {
