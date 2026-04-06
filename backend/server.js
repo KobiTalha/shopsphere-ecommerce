@@ -32,6 +32,11 @@ function normalizeCouponCode(value) {
   return String(value || "").trim().toUpperCase();
 }
 
+function normalizePhoneNumber(value) {
+  const trimmed = String(value || "").trim();
+  return trimmed.replace(/^\+?88/, "0");
+}
+
 function sortProducts(products, sortBy = "featured") {
   const entries = [...products];
 
@@ -93,7 +98,7 @@ function calculateCartSummary(cartItems, products, deliveryArea = "inside", coup
 function validateCheckoutPayload(body) {
   const errors = [];
   const name = String(body.name || "").trim();
-  const phone = String(body.phone || "").trim();
+  const phone = normalizePhoneNumber(body.phone);
   const address = String(body.address || "").trim();
   const deliveryArea = normalizeDeliveryArea(body.deliveryArea);
   const acceptedTerms = body.acceptedTerms === true;
