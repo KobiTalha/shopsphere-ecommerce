@@ -155,6 +155,16 @@ app.get("/api/products", async (req, res) => {
   }
 });
 
+app.get("/api/categories", async (req, res) => {
+  try {
+    const products = await readJson(productsFile);
+    const categories = [...new Set(products.map((product) => product.category))];
+    res.json(categories);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to load categories." });
+  }
+});
+
 app.get("/api/cart", async (req, res) => {
   try {
     const [products, cart] = await Promise.all([readJson(productsFile), readJson(cartFile)]);
