@@ -75,6 +75,7 @@ function calculateCartSummary(cartItems, products, deliveryArea = "inside", coup
     .filter(Boolean);
 
   const subtotal = enrichedItems.reduce((sum, item) => sum + item.itemTotal, 0);
+  const itemCount = enrichedItems.reduce((sum, item) => sum + item.quantity, 0);
   const normalizedDeliveryArea = normalizeDeliveryArea(deliveryArea);
   const normalizedCouponCode = normalizeCouponCode(couponCode);
   const deliveryCharge = normalizedDeliveryArea === "outside" ? 150 : 50;
@@ -85,6 +86,7 @@ function calculateCartSummary(cartItems, products, deliveryArea = "inside", coup
 
   return {
     items: enrichedItems,
+    itemCount,
     subtotal,
     deliveryArea: normalizedDeliveryArea,
     deliveryCharge,
