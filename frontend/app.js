@@ -596,6 +596,14 @@ window.addEventListener("resize", () => {
 });
 
 window.addEventListener("keydown", (event) => {
+  if (
+    event.key === "/" &&
+    !["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement?.tagName || "")
+  ) {
+    event.preventDefault();
+    elements.searchInput.focus();
+  }
+
   if (event.key === "Escape") {
     setCartPanelOpen(false);
   }
