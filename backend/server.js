@@ -204,6 +204,10 @@ app.post("/api/cart", async (req, res) => {
       return res.status(404).json({ message: "Product not found." });
     }
 
+    if (Number(product.stock || 0) < 1) {
+      return res.status(400).json({ message: "This product is currently out of stock." });
+    }
+
     const existingItem = cart.find((item) => item.productId === productId);
     if (existingItem) {
       existingItem.quantity += quantity;
