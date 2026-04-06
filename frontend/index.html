@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ShopSphere BD</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header">
+        <div class="topbar">
+          <a class="brand" href="#home">
+            <span class="brand-badge">S</span>
+            <div>
+              <strong>ShopSphere</strong>
+              <span>Fast delivery across Bangladesh</span>
+            </div>
+          </a>
+
+          <form class="searchbar" id="searchForm">
+            <input
+              type="search"
+              id="searchInput"
+              placeholder="Search gadgets, fashion, home essentials..."
+              aria-label="Search products"
+            />
+            <button type="submit">Search</button>
+          </form>
+
+          <button class="cart-trigger" id="cartTrigger" type="button" aria-label="Open cart">
+            <span>Cart</span>
+            <strong id="cartCount">0</strong>
+          </button>
+        </div>
+      </header>
+
+      <main class="page-main" id="home">
+        <section class="hero">
+          <div class="hero-copy">
+            <p class="eyebrow">Big savings, better delivery</p>
+            <h1>Modern shopping experience with instant totals and smooth checkout.</h1>
+            <p class="hero-text">
+              Browse curated products, manage your cart live, and place orders with delivery
+              pricing for inside or outside Dhaka.
+            </p>
+            <div class="hero-actions">
+              <a href="#products" class="button button-primary">Shop now</a>
+              <a href="#checkout" class="button button-secondary">Go to checkout</a>
+            </div>
+          </div>
+
+          <aside class="hero-panel">
+            <div class="hero-stat">
+              <span>Coupon unlock</span>
+              <strong>Spend over 2000 TK</strong>
+            </div>
+            <div class="hero-stat">
+              <span>Delivery charge</span>
+              <strong>Dhaka 50 TK / Outside 150 TK</strong>
+            </div>
+            <div class="hero-stat">
+              <span>Offer code</span>
+              <strong>SAVE200</strong>
+            </div>
+          </aside>
+        </section>
+
+        <section class="content-grid">
+          <section class="catalog" id="products">
+            <div class="section-head">
+              <div>
+                <p class="section-label">Featured products</p>
+                <h2>Trending picks for your next order</h2>
+              </div>
+              <span class="pill" id="resultCount">0 items</span>
+            </div>
+
+            <div class="product-grid" id="productGrid"></div>
+          </section>
+
+          <aside class="cart-panel" id="cartPanel">
+            <div class="panel-head">
+              <div>
+                <p class="section-label">Your cart</p>
+                <h2>Live order summary</h2>
+              </div>
+              <button class="panel-close" id="panelClose" type="button" aria-label="Close cart">
+                ×
+              </button>
+            </div>
+
+            <div class="cart-items" id="cartItems"></div>
+
+            <div class="summary-card">
+              <div class="summary-row">
+                <span>Subtotal</span>
+                <strong id="subtotalValue">0 TK</strong>
+              </div>
+              <div class="summary-row">
+                <span>Delivery</span>
+                <strong id="deliveryValue">50 TK</strong>
+              </div>
+              <div class="summary-row discount-row">
+                <span>Discount</span>
+                <strong id="discountValue">0 TK</strong>
+              </div>
+              <div class="summary-row total-row">
+                <span>Total</span>
+                <strong id="totalValue">50 TK</strong>
+              </div>
+              <p class="coupon-message" id="couponMessage">
+                Spend more than 2000 TK to unlock coupon code <strong>SAVE200</strong>.
+              </p>
+            </div>
+          </aside>
+        </section>
+
+        <section class="checkout" id="checkout">
+          <div class="section-head">
+            <div>
+              <p class="section-label">Checkout</p>
+              <h2>Complete your order</h2>
+            </div>
+          </div>
+
+          <form class="checkout-form" id="checkoutForm" novalidate>
+            <div class="field-grid">
+              <label class="field">
+                <span>Name</span>
+                <input type="text" id="customerName" name="name" placeholder="Your full name" required />
+              </label>
+
+              <label class="field">
+                <span>Phone</span>
+                <input
+                  type="tel"
+                  id="customerPhone"
+                  name="phone"
+                  placeholder="01XXXXXXXXX"
+                  required
+                />
+              </label>
+
+              <label class="field field-wide">
+                <span>Address</span>
+                <textarea
+                  id="customerAddress"
+                  name="address"
+                  rows="4"
+                  placeholder="House, road, area, district"
+                  required
+                ></textarea>
+              </label>
+            </div>
+
+            <div class="checkout-grid">
+              <div class="checkout-card">
+                <p class="section-label">Delivery option</p>
+                <div class="delivery-options">
+                  <label class="radio-card">
+                    <input type="radio" name="deliveryArea" value="inside" checked />
+                    <span>Inside Dhaka</span>
+                    <strong>50 TK</strong>
+                  </label>
+                  <label class="radio-card">
+                    <input type="radio" name="deliveryArea" value="outside" />
+                    <span>Outside Dhaka</span>
+                    <strong>150 TK</strong>
+                  </label>
+                </div>
+              </div>
+
+              <div class="checkout-card">
+                <p class="section-label">Coupon</p>
+                <label class="field">
+                  <span>Coupon code</span>
+                  <input type="text" id="couponInput" placeholder="Use SAVE200 after 2000 TK" />
+                </label>
+                <p class="hint" id="couponHint">
+                  Coupon becomes valid when subtotal is more than 2000 TK.
+                </p>
+              </div>
+            </div>
+
+            <div class="checkout-summary">
+              <div>
+                <span>Order total</span>
+                <strong id="checkoutTotal">50 TK</strong>
+              </div>
+              <label class="terms-row">
+                <input type="checkbox" id="termsCheckbox" />
+                <span>I agree to the terms and conditions.</span>
+              </label>
+              <button type="submit" id="submitButton" disabled>Place order</button>
+            </div>
+
+            <p class="form-feedback" id="formFeedback" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <p>ShopSphere BD</p>
+        <p>Responsive demo storefront with Express API, JSON storage, and modern checkout flow.</p>
+      </footer>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

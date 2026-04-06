@@ -1,0 +1,68 @@
+[
+  {
+    "id": "p-101",
+    "name": "Nova X Smartphone",
+    "category": "Electronics",
+    "price": 32990,
+    "originalPrice": 35990,
+    "rating": 4.8,
+    "badge": "Top Seller",
+    "image": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=900&q=80",
+    "description": "Flagship Android phone with AMOLED display, ultra-fast charging, and 5G performance."
+  },
+  {
+    "id": "p-102",
+    "name": "AeroFit Smart Watch",
+    "category": "Wearables",
+    "price": 7490,
+    "originalPrice": 8990,
+    "rating": 4.6,
+    "badge": "New",
+    "image": "https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&w=900&q=80",
+    "description": "Fitness watch with heart-rate tracking, sleep insights, and a seven-day battery."
+  },
+  {
+    "id": "p-103",
+    "name": "Studio Wireless Headphones",
+    "category": "Audio",
+    "price": 6590,
+    "originalPrice": 7990,
+    "rating": 4.7,
+    "badge": "Deal",
+    "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&q=80",
+    "description": "Deep bass, active noise canceling, and soft memory foam cups for all-day listening."
+  },
+  {
+    "id": "p-104",
+    "name": "UrbanPack Backpack",
+    "category": "Lifestyle",
+    "price": 2790,
+    "originalPrice": 3290,
+    "rating": 4.5,
+    "badge": "Popular",
+    "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80",
+    "description": "Water-resistant backpack with a laptop sleeve, hidden pocket, and travel-ready storage."
+  },
+  {
+    "id": "p-105",
+    "name": "Minimal Desk Lamp",
+    "category": "Home",
+    "price": 2190,
+    "originalPrice": 2590,
+    "rating": 4.4,
+    "badge": "Home Pick",
+    "image": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=900&q=80",
+    "description": "Warm LED desk light with adjustable brightness and a clean matte metal finish."
+  },
+  {
+    "id": "p-106",
+    "name": "Classic Runner Shoes",
+    "category": "Fashion",
+    "price": 4890,
+    "originalPrice": 5690,
+    "rating": 4.6,
+    "badge": "Limited",
+    "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80",
+    "description": "Lightweight everyday sneakers with cushioned support and breathable mesh fabric."
+  }
+]

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My E Commerce Webpage</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="site-header">
+        <h1>My E Commerce Webpage</h1>
+    </header>
+
+    <main class="page-content">
+        <section class="forms-wrapper">
+            <fieldset class="panel">
+                <legend>Add to Cart Section</legend>
+                <form id="cartForm">
+                    <label for="productName">Product Name</label>
+                    <input type="text" id="productName" name="productName" placeholder="Enter product name" required>
+
+                    <label for="quantity">Quantity</label>
+                    <input type="number" id="quantity" name="quantity" min="1" value="1" required>
+
+                    <label for="price">Price (Tk)</label>
+                    <input type="number" id="price" name="price" min="0" value="0" required>
+
+                    <div class="summary-box">
+                        <p><strong>Total Price:</strong> <span id="totalPrice">0</span> Tk</p>
+                        <p id="couponMessage" class="message"></p>
+                    </div>
+                </form>
+            </fieldset>
+
+            <fieldset class="panel">
+                <legend>Checkout Form</legend>
+                <form id="checkoutForm">
+                    <label for="customerName">Customer Name</label>
+                    <input type="text" id="customerName" name="customerName" placeholder="Enter your name" required>
+
+                    <label for="phoneNumber">Phone Number</label>
+                    <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Enter phone number" required>
+
+                    <label for="address">Address</label>
+                    <textarea id="address" name="address" rows="4" placeholder="Enter address" required></textarea>
+
+                    <div class="delivery-group">
+                        <p class="group-title">Delivery Area</p>
+                        <label class="radio-option">
+                            <input type="radio" name="deliveryArea" value="inside" checked>
+                            Inside Dhaka (+50 Tk)
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="deliveryArea" value="outside">
+                            Outside Dhaka (+150 Tk)
+                        </label>
+                    </div>
+
+                    <div class="summary-box">
+                        <p><strong>Delivery Charge:</strong> <span id="deliveryCharge">50</span> Tk</p>
+                        <p><strong>Grand Total:</strong> <span id="grandTotal">50</span> Tk</p>
+                    </div>
+
+                    <label class="terms-option">
+                        <input type="checkbox" id="termsCheckbox">
+                        I agree to the terms and conditions
+                    </label>
+
+                    <button type="submit" id="submitButton" class="hidden">Submit Order</button>
+                </form>
+            </fieldset>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>Copyright 2026</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
