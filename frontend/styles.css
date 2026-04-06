@@ -411,6 +411,29 @@ textarea {
   gap: 20px;
 }
 
+.category-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.category-chip {
+  border: 1px solid rgba(16, 42, 91, 0.1);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--accent);
+  cursor: pointer;
+  font-weight: 700;
+  padding: 10px 14px;
+}
+
+.category-chip.active {
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--accent) 0%, #1c4b9f 100%);
+  color: #fff;
+}
+
 .product-card {
   position: relative;
   display: grid;
