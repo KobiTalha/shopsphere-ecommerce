@@ -383,6 +383,20 @@ textarea {
   margin-bottom: 20px;
 }
 
+.cart-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.clear-cart-button {
+  border: 0;
+  background: transparent;
+  color: #d13d3d;
+  cursor: pointer;
+  font-weight: 700;
+}
+
 .catalog-toolbar {
   display: flex;
   align-items: center;
