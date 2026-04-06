@@ -1,7 +1,8 @@
 const state = {
   products: [],
   cart: null,
-  searchTerm: ""
+  searchTerm: "",
+  activeProductIds: new Set()
 };
 
 const elements = {
@@ -19,6 +20,7 @@ const elements = {
   couponInput: document.getElementById("couponInput"),
   searchInput: document.getElementById("searchInput"),
   searchForm: document.getElementById("searchForm"),
+  searchButton: document.querySelector("#searchForm button"),
   cartPanel: document.getElementById("cartPanel"),
   cartTrigger: document.getElementById("cartTrigger"),
   panelClose: document.getElementById("panelClose"),
@@ -30,6 +32,20 @@ const elements = {
 
 function formatCurrency(value) {
   return `${Number(value || 0).toLocaleString("en-BD")} TK`;
+}
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, (character) => {
+    const entities = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    };
+
+    return entities[character];
+  });
 }
 
 function getDeliveryArea() {
@@ -85,7 +101,12 @@ function renderProducts(products) {
               <span>Rating ${product.rating} / 5</span>
               <span>Fast shipping</span>
             </div>
-            <button class="add-button" type="button" data-product-id="${product.id}">
+            <button
+              class="add-button"
+              type="button"
+              data-product-id="${product.id}"
+              ${state.activeProductIds.has(product.id) ? "disabled" : ""}
+            >
               Add to cart
             </button>
           </div>
@@ -93,6 +114,15 @@ function renderProducts(products) {
       `;
     })
     .join("");
+}
+
+function renderProductLoading(search = "") {
+  elements.resultCount.textContent = "Searching...";
+  elements.productGrid.innerHTML = `
+    <p class="cart-empty loading-state">
+      Looking for ${search ? `<strong>${escapeHtml(search)}</strong>` : "all products"}...
+    </p>
+  `;
 }
 
 function renderCart(summary) {
@@ -121,11 +151,31 @@ function renderCart(summary) {
                 <strong>${formatCurrency(item.itemTotal)}</strong>
               </div>
               <div class="quantity-controls">
-                <button type="button" data-action="decrease" data-product-id="${item.productId}">−</button>
+                <button
+                  type="button"
+                  data-action="decrease"
+                  data-product-id="${item.productId}"
+                  ${state.activeProductIds.has(item.productId) ? "disabled" : ""}
+                >
+                  −
+                </button>
                 <span>${item.quantity}</span>
-                <button type="button" data-action="increase" data-product-id="${item.productId}">+</button>
+                <button
+                  type="button"
+                  data-action="increase"
+                  data-product-id="${item.productId}"
+                  ${state.activeProductIds.has(item.productId) ? "disabled" : ""}
+                >
+                  +
+                </button>
               </div>
-              <button class="remove-button" type="button" data-action="remove" data-product-id="${item.productId}">
+              <button
+                class="remove-button"
+                type="button"
+                data-action="remove"
+                data-product-id="${item.productId}"
+                ${state.activeProductIds.has(item.productId) ? "disabled" : ""}
+              >
                 Remove
               </button>
             </div>
@@ -153,6 +203,7 @@ function renderCart(summary) {
 
 async function loadProducts(search = "") {
   state.searchTerm = search;
+  renderProductLoading(search);
   const query = search ? `?search=${encodeURIComponent(search)}` : "";
   const products = await requestJson(`/api/products${query}`);
   state.products = products;
@@ -269,25 +320,75 @@ function toggleSubmitButton() {
   elements.submitButton.disabled = !elements.termsCheckbox.checked;
 }
 
+function setSearchPending(isPending) {
+  elements.searchInput.setAttribute("aria-busy", String(isPending));
+  elements.searchButton.disabled = isPending;
+  elements.searchButton.textContent = isPending ? "Searching..." : "Search";
+}
+
 function setCartPanelOpen(isOpen) {
   elements.cartPanel.classList.toggle("open", isOpen);
   elements.cartPanel.setAttribute("aria-hidden", String(!isOpen && window.innerWidth <= 780));
   elements.cartTrigger.setAttribute("aria-expanded", String(isOpen));
 }
 
+function syncProductActionState(productId) {
+  document.querySelectorAll(`[data-product-id="${productId}"]`).forEach((button) => {
+    button.disabled = state.activeProductIds.has(productId);
+  });
+}
+
+async function withProductAction(productId, action) {
+  if (state.activeProductIds.has(productId)) {
+    return;
+  }
+
+  state.activeProductIds.add(productId);
+  syncProductActionState(productId);
+
+  try {
+    await action();
+  } finally {
+    state.activeProductIds.delete(productId);
+    syncProductActionState(productId);
+  }
+}
+
+let searchDebounceId = 0;
+
+async function runSearch(search) {
+  setSearchPending(true);
+
+  try {
+    await loadProducts(search);
+  } catch (error) {
+    setFeedback(error.message, "error");
+  } finally {
+    setSearchPending(false);
+  }
+}
+
 elements.searchForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  await loadProducts(elements.searchInput.value.trim());
+  clearTimeout(searchDebounceId);
+  await runSearch(elements.searchInput.value.trim());
+});
+
+elements.searchInput.addEventListener("input", () => {
+  clearTimeout(searchDebounceId);
+  searchDebounceId = window.setTimeout(() => {
+    runSearch(elements.searchInput.value.trim());
+  }, 250);
 });
 
 elements.productGrid.addEventListener("click", async (event) => {
   const button = event.target.closest("[data-product-id]");
-  if (!button) {
+  if (!button || button.disabled) {
     return;
   }
 
   try {
-    await addToCart(button.dataset.productId);
+    await withProductAction(button.dataset.productId, () => addToCart(button.dataset.productId));
     setFeedback("Product added to cart.", "success");
   } catch (error) {
     setFeedback(error.message, "error");
@@ -296,7 +397,7 @@ elements.productGrid.addEventListener("click", async (event) => {
 
 elements.cartItems.addEventListener("click", async (event) => {
   const button = event.target.closest("[data-action]");
-  if (!button || !state.cart) {
+  if (!button || button.disabled || !state.cart) {
     return;
   }
 
@@ -307,21 +408,23 @@ elements.cartItems.addEventListener("click", async (event) => {
   }
 
   try {
-    if (action === "increase") {
-      await updateCartItem(productId, item.quantity + 1);
-    }
-
-    if (action === "decrease") {
-      if (item.quantity === 1) {
-        await removeCartItem(productId);
-      } else {
-        await updateCartItem(productId, item.quantity - 1);
+    await withProductAction(productId, async () => {
+      if (action === "increase") {
+        await updateCartItem(productId, item.quantity + 1);
       }
-    }
 
-    if (action === "remove") {
-      await removeCartItem(productId);
-    }
+      if (action === "decrease") {
+        if (item.quantity === 1) {
+          await removeCartItem(productId);
+        } else {
+          await updateCartItem(productId, item.quantity - 1);
+        }
+      }
+
+      if (action === "remove") {
+        await removeCartItem(productId);
+      }
+    });
   } catch (error) {
     setFeedback(error.message, "error");
   }

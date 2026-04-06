@@ -488,6 +488,15 @@ textarea {
   background: rgba(16, 42, 91, 0.14);
 }
 
+.add-button:disabled,
+.searchbar button:disabled,
+.quantity-controls button:disabled,
+.remove-button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+  transform: none;
+}
+
 .cart-panel {
   position: sticky;
   top: 108px;
@@ -616,6 +625,10 @@ textarea {
   margin: 14px 0 0;
   color: var(--muted);
   line-height: 1.6;
+}
+
+.loading-state {
+  text-align: center;
 }
 
 .checkout {
