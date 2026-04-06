@@ -24,6 +24,12 @@ Modern full-stack e-commerce website built using HTML, CSS, JavaScript and Node.
 - `DELETE /api/cart`
 - `POST /api/checkout`
 
+## 📁 Project Structure
+- `frontend/` static storefront assets
+- `backend/server.js` Express API and static file serving
+- `backend/data/products.json` seeded product catalog
+- `backend/data/cart.json` persisted cart state for the demo
+
 ## ▶️ Run Locally
 ```bash
 cd backend
