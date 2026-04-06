@@ -13,6 +13,17 @@ Modern full-stack e-commerce website built using HTML, CSS, JavaScript and Node.
 - Frontend: HTML, CSS, JS
 - Backend: Node.js (Express)
 
+## 🔌 API Endpoints
+- `GET /api/health`
+- `GET /api/categories`
+- `GET /api/products`
+- `GET /api/cart`
+- `POST /api/cart`
+- `PATCH /api/cart/:productId`
+- `DELETE /api/cart/:productId`
+- `DELETE /api/cart`
+- `POST /api/checkout`
+
 ## ▶️ Run Locally
 ```bash
 cd backend
