@@ -53,6 +53,8 @@ textarea {
 
 .site-shell {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .skip-link {
@@ -96,6 +98,12 @@ textarea {
   padding: 18px clamp(18px, 3vw, 42px);
   color: var(--muted);
   font-size: 0.95rem;
+}
+
+.site-footer {
+  position: static;
+  backdrop-filter: none;
+  background: transparent;
 }
 
 .topbar,
@@ -155,6 +163,11 @@ textarea {
   border-radius: 999px;
   padding: 8px;
   box-shadow: 0 10px 30px rgba(23, 32, 51, 0.05);
+}
+
+.searchbar:focus-within {
+  border-color: rgba(241, 78, 13, 0.26);
+  box-shadow: 0 16px 28px rgba(241, 78, 13, 0.14);
 }
 
 .searchbar input {
@@ -238,6 +251,7 @@ textarea {
 }
 
 .page-main {
+  flex: 1;
   padding: 30px 0 0;
 }
 
@@ -747,6 +761,19 @@ textarea {
   color: #d13d3d;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
 @keyframes rise {
   from {
     opacity: 0;
@@ -762,6 +789,10 @@ textarea {
 @media (max-width: 1080px) {
   .topbar {
     grid-template-columns: 1fr;
+  }
+
+  .cart-trigger {
+    justify-self: start;
   }
 
   .hero,
@@ -785,6 +816,15 @@ textarea {
     width: min(1280px, calc(100% - 20px));
   }
 
+  .topbar {
+    gap: 14px;
+  }
+
+  .searchbar,
+  .cart-trigger {
+    width: 100%;
+  }
+
   .product-grid {
     grid-template-columns: 1fr;
   }
@@ -794,7 +834,7 @@ textarea {
     top: 84px;
     right: 12px;
     left: 12px;
-    bottom: 76px;
+    bottom: 16px;
     transform: translateY(130%);
     transition: transform 220ms ease;
     z-index: 40;
