@@ -310,6 +310,7 @@ function validateCheckoutForm() {
   const name = document.getElementById("customerName").value.trim();
   const phone = document.getElementById("customerPhone").value.trim();
   const address = document.getElementById("customerAddress").value.trim();
+  const note = document.getElementById("customerNote").value.trim();
 
   if (!state.cart || state.cart.items.length === 0) {
     return "Add at least one product before checkout.";
@@ -325,6 +326,10 @@ function validateCheckoutForm() {
 
   if (address.length < 10) {
     return "Enter a complete delivery address.";
+  }
+
+  if (note.length > 160) {
+    return "Keep the delivery note within 160 characters.";
   }
 
   return "";
@@ -349,6 +354,7 @@ async function submitCheckout(event) {
       name: document.getElementById("customerName").value.trim(),
       phone: document.getElementById("customerPhone").value.trim(),
       address: document.getElementById("customerAddress").value.trim(),
+      note: document.getElementById("customerNote").value.trim(),
       deliveryArea: getDeliveryArea(),
       couponCode: getCouponCode(),
       acceptedTerms: elements.termsCheckbox.checked
