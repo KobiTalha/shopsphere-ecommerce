@@ -28,6 +28,10 @@ function normalizeDeliveryArea(value) {
   return value === "outside" ? "outside" : "inside";
 }
 
+function normalizeCouponCode(value) {
+  return String(value || "").trim().toUpperCase();
+}
+
 function calculateCartSummary(cartItems, products, deliveryArea = "inside", couponCode = "") {
   const enrichedItems = cartItems
     .map((item) => {
@@ -49,9 +53,10 @@ function calculateCartSummary(cartItems, products, deliveryArea = "inside", coup
 
   const subtotal = enrichedItems.reduce((sum, item) => sum + item.itemTotal, 0);
   const normalizedDeliveryArea = normalizeDeliveryArea(deliveryArea);
+  const normalizedCouponCode = normalizeCouponCode(couponCode);
   const deliveryCharge = normalizedDeliveryArea === "outside" ? 150 : 50;
   const couponEligible = subtotal > 2000;
-  const couponApplied = couponEligible && couponCode.trim().toUpperCase() === COUPON_CODE;
+  const couponApplied = couponEligible && normalizedCouponCode === COUPON_CODE;
   const discount = couponApplied ? 200 : 0;
   const total = subtotal + deliveryCharge - discount;
 
@@ -98,7 +103,7 @@ function validateCheckoutPayload(body) {
       phone,
       address,
       deliveryArea,
-      couponCode: String(body.couponCode || "").trim().toUpperCase(),
+      couponCode: normalizeCouponCode(body.couponCode),
       acceptedTerms
     }
   };
