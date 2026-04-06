@@ -350,6 +350,7 @@ async function submitCheckout(event) {
   }
 
   try {
+    setCheckoutPending(true);
     const payload = {
       name: document.getElementById("customerName").value.trim(),
       phone: document.getElementById("customerPhone").value.trim(),
@@ -375,11 +376,19 @@ async function submitCheckout(event) {
     await refreshCart();
   } catch (error) {
     setFeedback(error.message, "error");
+  } finally {
+    setCheckoutPending(false);
   }
 }
 
 function toggleSubmitButton() {
   elements.submitButton.disabled = !elements.termsCheckbox.checked;
+}
+
+function setCheckoutPending(isPending) {
+  elements.submitButton.disabled = isPending || !elements.termsCheckbox.checked;
+  elements.submitButton.textContent = isPending ? "Placing order..." : "Place order";
+  elements.checkoutForm.classList.toggle("is-submitting", isPending);
 }
 
 function setSearchPending(isPending) {
