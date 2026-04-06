@@ -2,6 +2,7 @@ const state = {
   products: [],
   cart: null,
   searchTerm: "",
+  sortBy: "featured",
   activeProductIds: new Set()
 };
 
@@ -21,6 +22,7 @@ const elements = {
   searchInput: document.getElementById("searchInput"),
   searchForm: document.getElementById("searchForm"),
   searchButton: document.querySelector("#searchForm button"),
+  sortSelect: document.getElementById("sortSelect"),
   cartPanel: document.getElementById("cartPanel"),
   cartTrigger: document.getElementById("cartTrigger"),
   panelClose: document.getElementById("panelClose"),
@@ -204,7 +206,14 @@ function renderCart(summary) {
 async function loadProducts(search = "") {
   state.searchTerm = search;
   renderProductLoading(search);
-  const query = search ? `?search=${encodeURIComponent(search)}` : "";
+  const params = new URLSearchParams();
+  if (search) {
+    params.set("search", search);
+  }
+  if (state.sortBy && state.sortBy !== "featured") {
+    params.set("sort", state.sortBy);
+  }
+  const query = params.toString() ? `?${params.toString()}` : "";
   const products = await requestJson(`/api/products${query}`);
   state.products = products;
   renderProducts(products);
@@ -379,6 +388,11 @@ elements.searchInput.addEventListener("input", () => {
   searchDebounceId = window.setTimeout(() => {
     runSearch(elements.searchInput.value.trim());
   }, 250);
+});
+
+elements.sortSelect.addEventListener("change", async () => {
+  state.sortBy = elements.sortSelect.value;
+  await runSearch(elements.searchInput.value.trim());
 });
 
 elements.productGrid.addEventListener("click", async (event) => {
