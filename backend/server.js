@@ -24,6 +24,10 @@ async function writeJson(filePath, data) {
   await fs.writeFile(filePath, JSON.stringify(data, null, 2));
 }
 
+function normalizeDeliveryArea(value) {
+  return value === "outside" ? "outside" : "inside";
+}
+
 function calculateCartSummary(cartItems, products, deliveryArea = "inside", couponCode = "") {
   const enrichedItems = cartItems
     .map((item) => {
@@ -44,7 +48,8 @@ function calculateCartSummary(cartItems, products, deliveryArea = "inside", coup
     .filter(Boolean);
 
   const subtotal = enrichedItems.reduce((sum, item) => sum + item.itemTotal, 0);
-  const deliveryCharge = deliveryArea === "outside" ? 150 : 50;
+  const normalizedDeliveryArea = normalizeDeliveryArea(deliveryArea);
+  const deliveryCharge = normalizedDeliveryArea === "outside" ? 150 : 50;
   const couponEligible = subtotal > 2000;
   const couponApplied = couponEligible && couponCode.trim().toUpperCase() === COUPON_CODE;
   const discount = couponApplied ? 200 : 0;
@@ -53,7 +58,7 @@ function calculateCartSummary(cartItems, products, deliveryArea = "inside", coup
   return {
     items: enrichedItems,
     subtotal,
-    deliveryArea,
+    deliveryArea: normalizedDeliveryArea,
     deliveryCharge,
     couponEligible,
     couponCode: couponApplied ? COUPON_CODE : "",
@@ -67,7 +72,7 @@ function validateCheckoutPayload(body) {
   const name = String(body.name || "").trim();
   const phone = String(body.phone || "").trim();
   const address = String(body.address || "").trim();
-  const deliveryArea = body.deliveryArea === "outside" ? "outside" : "inside";
+  const deliveryArea = normalizeDeliveryArea(body.deliveryArea);
   const acceptedTerms = body.acceptedTerms === true;
 
   if (name.length < 3) {
