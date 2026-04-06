@@ -33,6 +33,13 @@ body {
     linear-gradient(180deg, #f8fbff 0%, #eef2f8 100%);
 }
 
+a,
+button,
+input,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
 img {
   display: block;
   max-width: 100%;
@@ -46,6 +53,24 @@ textarea {
 
 .site-shell {
   min-height: 100vh;
+}
+
+.skip-link {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  z-index: 50;
+  transform: translateY(-160%);
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  text-decoration: none;
+  transition: transform 180ms ease;
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
 }
 
 .site-header,
@@ -150,6 +175,11 @@ textarea {
     box-shadow 180ms ease,
     background 180ms ease,
     color 180ms ease;
+}
+
+:focus-visible {
+  outline: 3px solid rgba(255, 107, 44, 0.28);
+  outline-offset: 3px;
 }
 
 .searchbar button,

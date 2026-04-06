@@ -1,6 +1,7 @@
 const state = {
   products: [],
-  cart: null
+  cart: null,
+  searchTerm: ""
 };
 
 const elements = {
@@ -151,6 +152,7 @@ function renderCart(summary) {
 }
 
 async function loadProducts(search = "") {
+  state.searchTerm = search;
   const query = search ? `?search=${encodeURIComponent(search)}` : "";
   const products = await requestJson(`/api/products${query}`);
   state.products = products;
@@ -267,6 +269,12 @@ function toggleSubmitButton() {
   elements.submitButton.disabled = !elements.termsCheckbox.checked;
 }
 
+function setCartPanelOpen(isOpen) {
+  elements.cartPanel.classList.toggle("open", isOpen);
+  elements.cartPanel.setAttribute("aria-hidden", String(!isOpen && window.innerWidth <= 780));
+  elements.cartTrigger.setAttribute("aria-expanded", String(isOpen));
+}
+
 elements.searchForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   await loadProducts(elements.searchInput.value.trim());
@@ -328,22 +336,23 @@ elements.termsCheckbox.addEventListener("change", toggleSubmitButton);
 elements.checkoutForm.addEventListener("submit", submitCheckout);
 
 elements.cartTrigger.addEventListener("click", () => {
-  elements.cartPanel.classList.add("open");
+  setCartPanelOpen(true);
 });
 
 elements.panelClose.addEventListener("click", () => {
-  elements.cartPanel.classList.remove("open");
+  setCartPanelOpen(false);
 });
 
 window.addEventListener("resize", () => {
   if (window.innerWidth > 780) {
-    elements.cartPanel.classList.remove("open");
+    setCartPanelOpen(false);
   }
 });
 
 async function init() {
   try {
     await Promise.all([loadProducts(), refreshCart()]);
+    setCartPanelOpen(false);
     toggleSubmitButton();
   } catch (error) {
     setFeedback("Failed to load the storefront.", "error");
@@ -351,13 +360,3 @@ async function init() {
 }
 
 init();
-// update 1
-// update 2
-// update 3
-// update 4
-// update 5
-// update 6
-// update 7
-// update 8
-// update 9
-// update 10
