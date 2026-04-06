@@ -32,6 +32,24 @@ function normalizeCouponCode(value) {
   return String(value || "").trim().toUpperCase();
 }
 
+function sortProducts(products, sortBy = "featured") {
+  const entries = [...products];
+
+  if (sortBy === "price-asc") {
+    return entries.sort((left, right) => left.price - right.price);
+  }
+
+  if (sortBy === "price-desc") {
+    return entries.sort((left, right) => right.price - left.price);
+  }
+
+  if (sortBy === "rating") {
+    return entries.sort((left, right) => right.rating - left.rating);
+  }
+
+  return entries;
+}
+
 function calculateCartSummary(cartItems, products, deliveryArea = "inside", couponCode = "") {
   const enrichedItems = cartItems
     .map((item) => {
@@ -116,6 +134,7 @@ app.get("/api/health", (req, res) => {
 app.get("/api/products", async (req, res) => {
   try {
     const query = String(req.query.search || "").trim().toLowerCase();
+    const sortBy = String(req.query.sort || "featured").trim();
     const products = await readJson(productsFile);
     const filtered = query
       ? products.filter((product) => {
@@ -126,7 +145,7 @@ app.get("/api/products", async (req, res) => {
         })
       : products;
 
-    res.json(filtered);
+    res.json(sortProducts(filtered, sortBy));
   } catch (error) {
     res.status(500).json({ message: "Failed to load products." });
   }
