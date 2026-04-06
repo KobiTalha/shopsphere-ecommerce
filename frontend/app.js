@@ -28,6 +28,7 @@ const elements = {
   clearSearchButton: document.getElementById("clearSearchButton"),
   sortSelect: document.getElementById("sortSelect"),
   cartPanel: document.getElementById("cartPanel"),
+  cartOverlay: document.getElementById("cartOverlay"),
   cartTrigger: document.getElementById("cartTrigger"),
   clearCartButton: document.getElementById("clearCartButton"),
   panelClose: document.getElementById("panelClose"),
@@ -386,6 +387,7 @@ function setCartPanelOpen(isOpen) {
   elements.cartPanel.classList.toggle("open", isOpen);
   elements.cartPanel.setAttribute("aria-hidden", String(!isOpen && window.innerWidth <= 780));
   elements.cartTrigger.setAttribute("aria-expanded", String(isOpen));
+  elements.cartOverlay.hidden = !isOpen || window.innerWidth > 780;
 }
 
 function syncProductActionState(productId) {
@@ -538,8 +540,18 @@ elements.clearCartButton.addEventListener("click", async () => {
   }
 });
 
+elements.cartOverlay.addEventListener("click", () => {
+  setCartPanelOpen(false);
+});
+
 window.addEventListener("resize", () => {
   if (window.innerWidth > 780) {
+    setCartPanelOpen(false);
+  }
+});
+
+window.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
     setCartPanelOpen(false);
   }
 });
