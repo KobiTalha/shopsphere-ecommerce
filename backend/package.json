@@ -4,7 +4,9 @@
   "description": "Modern full-featured e-commerce demo with Express backend and static frontend",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "node server.js",
+    "check": "node --check server.js"
   },
   "dependencies": {
     "express": "^4.21.2"
