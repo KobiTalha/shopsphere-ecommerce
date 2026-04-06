@@ -29,6 +29,7 @@ const elements = {
   sortSelect: document.getElementById("sortSelect"),
   cartPanel: document.getElementById("cartPanel"),
   cartTrigger: document.getElementById("cartTrigger"),
+  clearCartButton: document.getElementById("clearCartButton"),
   panelClose: document.getElementById("panelClose"),
   checkoutForm: document.getElementById("checkoutForm"),
   termsCheckbox: document.getElementById("termsCheckbox"),
@@ -289,6 +290,13 @@ async function removeCartItem(productId) {
   await refreshCart();
 }
 
+async function clearCart() {
+  await requestJson("/api/cart", {
+    method: "DELETE"
+  });
+  await refreshCart();
+}
+
 function setFeedback(message, type = "") {
   elements.formFeedback.textContent = message;
   elements.formFeedback.className = "form-feedback";
@@ -515,6 +523,19 @@ elements.cartTrigger.addEventListener("click", () => {
 
 elements.panelClose.addEventListener("click", () => {
   setCartPanelOpen(false);
+});
+
+elements.clearCartButton.addEventListener("click", async () => {
+  if (!state.cart || state.cart.items.length === 0) {
+    return;
+  }
+
+  try {
+    await clearCart();
+    setFeedback("Cart cleared.", "success");
+  } catch (error) {
+    setFeedback(error.message, "error");
+  }
 });
 
 window.addEventListener("resize", () => {
