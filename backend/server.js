@@ -109,6 +109,10 @@ function validateCheckoutPayload(body) {
   };
 }
 
+app.get("/api/health", (req, res) => {
+  res.json({ status: "ok" });
+});
+
 app.get("/api/products", async (req, res) => {
   try {
     const query = String(req.query.search || "").trim().toLowerCase();
