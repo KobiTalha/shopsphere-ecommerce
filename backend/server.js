@@ -11,7 +11,8 @@ const productsFile = path.join(dataDir, "products.json");
 const cartFile = path.join(dataDir, "cart.json");
 const COUPON_CODE = "SAVE200";
 
-app.use(express.json());
+app.disable("x-powered-by");
+app.use(express.json({ limit: "100kb" }));
 app.use(express.static(frontendDir));
 
 async function readJson(filePath) {
