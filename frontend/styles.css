@@ -33,6 +33,10 @@ body {
     linear-gradient(180deg, #f8fbff 0%, #eef2f8 100%);
 }
 
+body.cart-open {
+  overflow: hidden;
+}
+
 a,
 button,
 input,
