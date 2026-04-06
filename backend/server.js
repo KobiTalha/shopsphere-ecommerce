@@ -102,6 +102,7 @@ function validateCheckoutPayload(body) {
   const name = String(body.name || "").trim();
   const phone = normalizePhoneNumber(body.phone);
   const address = String(body.address || "").trim();
+  const note = String(body.note || "").trim();
   const deliveryArea = normalizeDeliveryArea(body.deliveryArea);
   const acceptedTerms = body.acceptedTerms === true;
 
@@ -117,6 +118,10 @@ function validateCheckoutPayload(body) {
     errors.push("Address must be at least 10 characters.");
   }
 
+  if (note.length > 160) {
+    errors.push("Order note must be 160 characters or fewer.");
+  }
+
   if (!acceptedTerms) {
     errors.push("Terms and conditions must be accepted.");
   }
@@ -127,6 +132,7 @@ function validateCheckoutPayload(body) {
       name,
       phone,
       address,
+      note,
       deliveryArea,
       couponCode: normalizeCouponCode(body.couponCode),
       acceptedTerms
