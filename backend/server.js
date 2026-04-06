@@ -246,6 +246,16 @@ app.delete("/api/cart/:productId", async (req, res) => {
   }
 });
 
+app.delete("/api/cart", async (req, res) => {
+  try {
+    const products = await readJson(productsFile);
+    await writeJson(cartFile, []);
+    res.json(calculateCartSummary([], products));
+  } catch (error) {
+    res.status(500).json({ message: "Failed to clear cart." });
+  }
+});
+
 app.post("/api/checkout", async (req, res) => {
   try {
     const [products, cart] = await Promise.all([readJson(productsFile), readJson(cartFile)]);
