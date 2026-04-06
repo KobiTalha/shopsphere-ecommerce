@@ -1,7 +1,9 @@
 const state = {
   products: [],
+  categories: [],
   cart: null,
   searchTerm: "",
+  category: "",
   sortBy: "featured",
   activeProductIds: new Set()
 };
@@ -9,6 +11,7 @@ const state = {
 const elements = {
   productGrid: document.getElementById("productGrid"),
   resultCount: document.getElementById("resultCount"),
+  categoryRow: document.getElementById("categoryRow"),
   cartItems: document.getElementById("cartItems"),
   cartCount: document.getElementById("cartCount"),
   subtotalValue: document.getElementById("subtotalValue"),
@@ -118,6 +121,27 @@ function renderProducts(products) {
     .join("");
 }
 
+function renderCategories(categories) {
+  state.categories = categories;
+  const allCategories = ["All", ...categories];
+  elements.categoryRow.innerHTML = allCategories
+    .map((category) => {
+      const value = category === "All" ? "" : category;
+      const isActive = state.category === value;
+
+      return `
+        <button
+          class="category-chip${isActive ? " active" : ""}"
+          type="button"
+          data-category="${value}"
+        >
+          ${category}
+        </button>
+      `;
+    })
+    .join("");
+}
+
 function renderProductLoading(search = "") {
   elements.resultCount.textContent = "Searching...";
   elements.productGrid.innerHTML = `
@@ -210,6 +234,9 @@ async function loadProducts(search = "") {
   if (search) {
     params.set("search", search);
   }
+  if (state.category) {
+    params.set("category", state.category);
+  }
   if (state.sortBy && state.sortBy !== "featured") {
     params.set("sort", state.sortBy);
   }
@@ -217,6 +244,11 @@ async function loadProducts(search = "") {
   const products = await requestJson(`/api/products${query}`);
   state.products = products;
   renderProducts(products);
+}
+
+async function loadCategories() {
+  const categories = await requestJson("/api/categories");
+  renderCategories(categories);
 }
 
 async function refreshCart() {
@@ -395,6 +427,17 @@ elements.sortSelect.addEventListener("change", async () => {
   await runSearch(elements.searchInput.value.trim());
 });
 
+elements.categoryRow.addEventListener("click", async (event) => {
+  const button = event.target.closest("[data-category]");
+  if (!button) {
+    return;
+  }
+
+  state.category = button.dataset.category;
+  renderCategories(state.categories);
+  await runSearch(elements.searchInput.value.trim());
+});
+
 elements.productGrid.addEventListener("click", async (event) => {
   const button = event.target.closest("[data-product-id]");
   if (!button || button.disabled) {
@@ -468,7 +511,7 @@ window.addEventListener("resize", () => {
 
 async function init() {
   try {
-    await Promise.all([loadProducts(), refreshCart()]);
+    await Promise.all([loadCategories(), loadProducts(), refreshCart()]);
     setCartPanelOpen(false);
     toggleSubmitButton();
   } catch (error) {
