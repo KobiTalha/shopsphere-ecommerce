@@ -135,15 +135,19 @@ app.get("/api/products", async (req, res) => {
   try {
     const query = String(req.query.search || "").trim().toLowerCase();
     const sortBy = String(req.query.sort || "featured").trim();
+    const category = String(req.query.category || "").trim().toLowerCase();
     const products = await readJson(productsFile);
+    const filteredByCategory = category
+      ? products.filter((product) => product.category.toLowerCase() === category)
+      : products;
     const filtered = query
-      ? products.filter((product) => {
+      ? filteredByCategory.filter((product) => {
           return [product.name, product.category, product.description]
             .join(" ")
             .toLowerCase()
             .includes(query);
         })
-      : products;
+      : filteredByCategory;
 
     res.json(sortProducts(filtered, sortBy));
   } catch (error) {
