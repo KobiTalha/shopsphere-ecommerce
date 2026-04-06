@@ -56,6 +56,25 @@ function escapeHtml(value) {
   });
 }
 
+function syncCatalogQuery() {
+  const params = new URLSearchParams();
+
+  if (state.searchTerm) {
+    params.set("search", state.searchTerm);
+  }
+
+  if (state.category) {
+    params.set("category", state.category);
+  }
+
+  if (state.sortBy && state.sortBy !== "featured") {
+    params.set("sort", state.sortBy);
+  }
+
+  const nextUrl = params.toString() ? `?${params.toString()}` : window.location.pathname;
+  window.history.replaceState({}, "", nextUrl);
+}
+
 function getDeliveryArea() {
   const selected = document.querySelector('input[name="deliveryArea"]:checked');
   return selected ? selected.value : "inside";
@@ -252,6 +271,7 @@ async function loadProducts(search = "") {
   const products = await requestJson(`/api/products${query}`);
   state.products = products;
   renderProducts(products);
+  syncCatalogQuery();
 }
 
 async function loadCategories() {
