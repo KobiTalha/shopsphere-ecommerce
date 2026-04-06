@@ -93,7 +93,18 @@
                 <p class="section-label">Featured products</p>
                 <h2>Trending picks for your next order</h2>
               </div>
-              <span class="pill" id="resultCount" aria-live="polite">0 items</span>
+              <div class="catalog-toolbar">
+                <label class="sort-field" for="sortSelect">
+                  <span>Sort by</span>
+                  <select id="sortSelect">
+                    <option value="featured">Featured</option>
+                    <option value="rating">Top rated</option>
+                    <option value="price-asc">Price: low to high</option>
+                    <option value="price-desc">Price: high to low</option>
+                  </select>
+                </label>
+                <span class="pill" id="resultCount" aria-live="polite">0 items</span>
+              </div>
             </div>
 
             <div class="product-grid" id="productGrid" aria-live="polite"></div>
