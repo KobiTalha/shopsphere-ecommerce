@@ -295,7 +295,8 @@ app.post("/api/checkout", async (req, res) => {
       customer: {
         name: sanitized.name,
         phone: sanitized.phone,
-        address: sanitized.address
+        address: sanitized.address,
+        note: sanitized.note
       },
       summary
     });
