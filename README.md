@@ -14,8 +14,10 @@ Modern full-stack e-commerce website built using HTML, CSS, JavaScript and Node.
 - Backend: Node.js (Express)
 
 ## ▶️ Run Locally
+```bash
 cd backend
 npm install
-node server.js
+npm start
+```
 
 Open: http://localhost:3000
