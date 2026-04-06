@@ -25,6 +25,7 @@ const elements = {
   searchInput: document.getElementById("searchInput"),
   searchForm: document.getElementById("searchForm"),
   searchButton: document.querySelector("#searchForm button"),
+  clearSearchButton: document.getElementById("clearSearchButton"),
   sortSelect: document.getElementById("sortSelect"),
   cartPanel: document.getElementById("cartPanel"),
   cartTrigger: document.getElementById("cartTrigger"),
@@ -365,6 +366,7 @@ function setSearchPending(isPending) {
   elements.searchInput.setAttribute("aria-busy", String(isPending));
   elements.searchButton.disabled = isPending;
   elements.searchButton.textContent = isPending ? "Searching..." : "Search";
+  elements.clearSearchButton.disabled = isPending;
 }
 
 function setCartPanelOpen(isOpen) {
@@ -416,10 +418,17 @@ elements.searchForm.addEventListener("submit", async (event) => {
 });
 
 elements.searchInput.addEventListener("input", () => {
+  elements.clearSearchButton.hidden = elements.searchInput.value.trim() === "";
   clearTimeout(searchDebounceId);
   searchDebounceId = window.setTimeout(() => {
     runSearch(elements.searchInput.value.trim());
   }, 250);
+});
+
+elements.clearSearchButton.addEventListener("click", async () => {
+  elements.searchInput.value = "";
+  elements.clearSearchButton.hidden = true;
+  await runSearch("");
 });
 
 elements.sortSelect.addEventListener("change", async () => {
@@ -512,6 +521,7 @@ window.addEventListener("resize", () => {
 async function init() {
   try {
     await Promise.all([loadCategories(), loadProducts(), refreshCart()]);
+    elements.clearSearchButton.hidden = true;
     setCartPanelOpen(false);
     toggleSubmitButton();
   } catch (error) {
